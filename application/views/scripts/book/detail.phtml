@@ -1,0 +1,20 @@
+<p><a href="<?php echo $this->url(
+		array(),
+		'bookIndex') ?>">Zpět na seznam knih</a></p>
+		
+<h2><?php echo $this->escape($this->entry->name)?></h2>
+<h3><?php echo $this->escape($this->entry->author)?></h3>
+<div class="box">
+	<?php if ($this->entry->description){?>
+		<p><?php echo $this->escape($this->entry->description)?></p>
+	<?php }?>
+	<p><span class="bold">Cena: </span><?php echo $this->escape($this->entry->price)?> Kč</p>
+	<p><span class="bold">Na skladě: </span>
+		<?php if($this->entry->stock > 0){
+			echo $this->escape($this->entry->stock) . ' ks';
+		}
+		else{
+			echo 'není';
+		}?>
+	</p>
+</div>
