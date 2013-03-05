@@ -56,6 +56,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 						array('controller' => 'book',
 								'action' => 'delete'))
 		);
+		
+		$router->addRoute('userRegister',
+				new Zend_Controller_Router_Route('registrace',
+						array('controller' => 'user',
+								'action' => 'register'))
+		);
 	}
 	
 }
