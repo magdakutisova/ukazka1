@@ -6,6 +6,7 @@ class Application_Form_Book extends Zend_Form
     public function init()
     {
         $this->setMethod('post');
+        $this->setAttrib('enctype', 'multipart/form-data');
         
         $this->addElement('hidden', 'idBook', array(
         		'validators' => array('Int'),
@@ -58,6 +59,17 @@ class Application_Form_Book extends Zend_Form
         				'options' => array('min' => -1)),
         				)
         ));
+        
+        $this->addElement('file', 'image', array(
+        		'label' => 'Obálka knihy:',
+        		'destination' => PUBLIC_PATH . '/images',
+        		'validators' => array(
+        				array('validator' => 'Count',
+        						'options' => 1),
+        				array('validator' => 'Extension',
+        						'options' => 'jpg,png,gif'),
+        				),
+        		));
         
         $this->addElement('submit', 'submit', array(
         		'ignore' => true,

@@ -39,6 +39,7 @@ class Application_Model_BookMapper
 				'description' => $book->getDescription(),
 				'price' => $book->getPrice(),
 				'stock' => $book->getStock(),
+				'image' => $book->getImage(),
 				);
 		
 		if(null === ($idBook = $book->getIdBook())){
@@ -46,6 +47,9 @@ class Application_Model_BookMapper
 			$this->getDbTable()->insert($data);
 		}
 		else{
+			if(null === ($image = $book->getImage())){
+				unset($data['image']);
+			}
 			$this->getDbTable()->update($data, array('idBook = ?' => $idBook));
 		}
 	}
@@ -72,7 +76,8 @@ class Application_Model_BookMapper
 			 ->setAuthor($row->author)
 			 ->setDescription($row->description)
 			 ->setPrice($row->price)
-			 ->setStock($row->stock);
+			 ->setStock($row->stock)
+			 ->setImage($row->image);
 		return $book;
 	}
 	
@@ -100,7 +105,8 @@ class Application_Model_BookMapper
 			      ->setAuthor($row->author)
 			      ->setDescription($row->description)
 			      ->setPrice($row->price)
-			      ->setStock($row->stock);
+			      ->setStock($row->stock)
+				  ->setImage($row->image);
 			$entries[] = $entry;
 		}
 		return $entries;

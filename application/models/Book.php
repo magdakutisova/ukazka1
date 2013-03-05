@@ -9,6 +9,7 @@ class Application_Model_Book
 	protected $description;
 	protected $price;
 	protected $stock;
+	protected $image;
 	
 	/*******************
 	 * Vytvoří instanci a nastaví atributy.
@@ -107,6 +108,15 @@ class Application_Model_Book
 	
 	public function getStock(){
 		return $this->stock;
+	}
+	
+	public function setImage($image){
+		$this->image = $image;
+		return $this;
+	}
+	
+	public function getImage(){
+		return $this->image;
 	}
 		
 }

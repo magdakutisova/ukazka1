@@ -5,6 +5,10 @@
 <h2><?php echo $this->escape($this->entry->name)?></h2>
 <h3><?php echo $this->escape($this->entry->author)?></h3>
 <div class="box">
+	<?php if ($this->entry->image){ ?>
+		<img src="<?php echo $this->baseUrl('/images/' . $this->entry->image) ?>" class="float-left"
+		alt="<?php echo $this->entry->name?>"/>
+	<?php }?>
 	<?php if ($this->entry->description){?>
 		<p><?php echo $this->escape($this->entry->description)?></p>
 	<?php }?>
