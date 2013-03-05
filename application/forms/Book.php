@@ -7,6 +7,10 @@ class Application_Form_Book extends Zend_Form
     {
         $this->setMethod('post');
         
+        $this->addElement('hidden', 'idBook', array(
+        		'validators' => array('Int'),
+        		));
+        
         $this->addElement('text', 'name', array(
         		'label' => 'Název knihy:',
         		'required' => true,

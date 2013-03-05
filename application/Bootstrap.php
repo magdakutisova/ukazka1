@@ -44,6 +44,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 						array('controller' => 'book',
 								'action' => 'new'))
 				);
+		
+		$router->addRoute('bookEdit',
+				new Zend_Controller_Router_Route('kniha/:idBook/upravit',
+						array('controller' => 'book',
+								'action' => 'edit'))
+		);
+		
+		$router->addRoute('bookDelete',
+				new Zend_Controller_Router_Route('kniha/:idBook/smazat',
+						array('controller' => 'book',
+								'action' => 'delete'))
+		);
 	}
 	
 }

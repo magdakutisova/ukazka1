@@ -50,6 +50,13 @@ class Application_Model_BookMapper
 		}
 	}
 	
+	/*****
+	 * Smaže knihu z databáze.
+	 */
+	public function delete($idBook){
+		$this->getDbTable()->delete('idBook = ' . (int) $idBook);
+	}
+	
 	/******
 	 * Nalezne knihu v databázi podle zadaného ID a vrátí příslušnou instanci třídy
 	 * Application_Model_Book.
@@ -67,6 +74,17 @@ class Application_Model_BookMapper
 			 ->setPrice($row->price)
 			 ->setStock($row->stock);
 		return $book;
+	}
+	
+	/*****
+	 * Nalezne knihu v databázi podle zadaného ID a vrátí pole hodnot.
+	 */
+	public function findArray($idBook){
+		$result = $this->getDbTable()->find($idBook);
+		if(0 == count($result)){
+			return;
+		}
+		return $result->current()->toArray();
 	}
 	
 	/*****
