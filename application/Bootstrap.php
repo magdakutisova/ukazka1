@@ -22,6 +22,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Validate_Abstract::setDefaultTranslator($translator);
 	}
 	
+	protected function _initAutoload() {
+		$loader = Zend_Loader_Autoloader::getInstance();
+		$loader->registerNamespace('My_');
+		Zend_Controller_Action_HelperBroker::addPrefix('My_Controller_Helper');
+	}
+	
+	protected function _initAcl(){
+		$acl = new My_Controller_Helper_Acl();
+		$fc = Zend_Controller_Front::getInstance();
+		$fc->registerPlugin(new My_Plugin_Acl($acl));
+	}
+	
 	protected function _initRouter(array $options = array()){
 		$this->bootstrap('FrontController');
 		$frontController = $this->getResource('FrontController');

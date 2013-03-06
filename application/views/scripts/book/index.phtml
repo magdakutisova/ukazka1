@@ -1,6 +1,8 @@
+<?php if ($this->canAddBooks){?>
 <p><a href="<?php echo $this->url(
 		array(),
 		'bookNew') ?>">Přidat novou knihu</a></p>
+<?php }?>
 
 <h2>Knihy:</h2>
 <table>
@@ -11,9 +13,12 @@
 	<td><a href="<?php echo $this->url(
 			array('idBook' => $this->escape($entry->idBook)),
 			'bookDetail') ?>">Detail knihy</a></td>
+	<?php if ($this->canEditBooks){?>
 	<td><a href="<?php echo $this->url(
 			array('idBook' => $this->escape($entry->idBook)),
 			'bookEdit') ?>">Editovat knihu</a></td>
+	<?php }
+	if ($this->canDeleteBooks){?>
 	<td>
 		<form action="<?php echo $this->url(
 				array('idBook' => $this->escape($entry->idBook)),
@@ -21,6 +26,7 @@
 				<input type="submit" onclick="return confirm('Opravdu chcete knihu smazat?')" value="Smazat knihu"/>
 		</form>
 	</td>
+	<?php }?>
 </tr>
 <?php endforeach ?>
 </table>

@@ -12,6 +12,17 @@ class BookController extends Zend_Controller_Action
     {
         $book = new Application_Model_BookMapper();
         $this->view->entries = $book->fetchAll();
+        
+        //ACL
+        $acl = new My_Controller_Helper_Acl();
+        $email = '';
+        $role = 3;
+        if(Zend_Auth::getInstance()->hasIdentity()){
+        	$role = Zend_Auth::getInstance()->getIdentity()->role;
+        }
+        $this->view->canAddBooks = $acl->isAllowed($role, 'book', 'new');
+        $this->view->canEditBooks = $acl->isAllowed($role, 'book', 'edit');
+        $this->view->canDeleteBooks = $acl->isAllowed($role, 'book', 'delete');
     }
 
     public function detailAction()
