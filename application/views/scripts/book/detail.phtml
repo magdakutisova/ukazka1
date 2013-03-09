@@ -1,4 +1,6 @@
-<p><a href="<?php echo $this->url(
+<p><a href="<?php $title = 'Detail knihy';
+$this->headTitle($title);
+echo $this->url(
 		array(),
 		'bookIndex') ?>">Zpět na seznam knih</a></p>
 		
