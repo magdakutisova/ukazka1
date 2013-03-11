@@ -53,10 +53,13 @@ class BookController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $form = new Application_Form_Book();
-        $idBook = $request->getParam('idBook');
+        $idBook = $request->getParam('idBook', 0);
+        if(!$idBook){
+        	return $this->_helper->redirector()->gotoRoute(array(), 'bookNew');
+        }
         $mapper = new Application_Model_BookMapper();
-        $data = $mapper->findArray($idBook);
-        $form->populate($data);
+        $data = $mapper->find($idBook, new Application_Model_Book());
+        $form->populate($data->toArray());
 
         if($request->isPost()){
         	if($form->isValid($request->getPost())){
@@ -84,13 +87,20 @@ class BookController extends Zend_Controller_Action
 
     public function deleteAction()
     {
-        $request = $this->getRequest();
-        if($request->isPost()){
-        	$idBook = $request->getParam('idBook');
-        	$mapper = new Application_Model_BookMapper();
-        	$mapper->delete($idBook);
+    	$request = $this->getRequest();
+        $idBook = $request->getParam('idBook', 0);
+        $mapper = new Application_Model_BookMapper();
+        if(!$idBook){
         	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         }
+        if($request->isPost()){
+        	$del = $request->getParam('del', 'Ne');
+        	if($del == 'Ano'){
+        		$mapper->delete($idBook);
+        	}
+        	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        }
+        $this->view->book = $mapper->find($idBook, new Application_Model_Book());
     }
 
 

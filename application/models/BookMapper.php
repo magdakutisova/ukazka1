@@ -30,35 +30,17 @@ class Application_Model_BookMapper
 	}
 	
 	/*****
-	 * Uloží knihu do databáze.
-	 */
-	public function save(Application_Model_Book $book){
-		$data = array(
-				'name' => $book->getName(),
-				'author' => $book->getAuthor(),
-				'description' => $book->getDescription(),
-				'price' => $book->getPrice(),
-				'stock' => $book->getStock(),
-				'image' => $book->getImage(),
-				);
-		
-		if(null === ($idBook = $book->getIdBook())){
-			unset($data['idBook']);
-			$this->getDbTable()->insert($data);
+	 * Vrátí pole všech knih z databáze.
+	*/
+	public function fetchAll(){
+		$resultSet = $this->getDbTable()->fetchAll();
+		$entries = array();
+		foreach($resultSet as $row){
+			$entry = new Application_Model_Book();
+			$entry->exchangeArray($row->toArray());
+			$entries[] = $entry;
 		}
-		else{
-			if(null === ($image = $book->getImage())){
-				unset($data['image']);
-			}
-			$this->getDbTable()->update($data, array('idBook = ?' => $idBook));
-		}
-	}
-	
-	/*****
-	 * Smaže knihu z databáze.
-	 */
-	public function delete($idBook){
-		$this->getDbTable()->delete('idBook = ' . (int) $idBook);
+		return $entries;
 	}
 	
 	/******
@@ -66,50 +48,43 @@ class Application_Model_BookMapper
 	 * Application_Model_Book.
 	 */
 	public function find($idBook, Application_Model_Book $book){
+		$idBook = (int) $idBook;
 		$result = $this->getDbTable()->find($idBook);
 		if(0 == count($result)){
-			return;
+			throw new Exception("Kniha $idBook nebyla nalezena");
 		}
 		$row = $result->current();
-		$book->setIdBook($row->idBook)
-			 ->setName($row->name)
-			 ->setAuthor($row->author)
-			 ->setDescription($row->description)
-			 ->setPrice($row->price)
-			 ->setStock($row->stock)
-			 ->setImage($row->image);
+		$book->exchangeArray($row->toArray());
 		return $book;
 	}
 	
 	/*****
-	 * Nalezne knihu v databázi podle zadaného ID a vrátí pole hodnot.
-	 */
-	public function findArray($idBook){
-		$result = $this->getDbTable()->find($idBook);
-		if(0 == count($result)){
-			return;
+	 * Uloží knihu do databáze.
+	*/
+	public function save(Application_Model_Book $book){
+		$data = $book->toArray();
+		if(null == ($image = $book->image)){
+			unset($data['image']);
 		}
-		return $result->current()->toArray();
+		if(null == ($idBook = $book->idBook())){
+			unset($data['idBook']);
+			$this->getDbTable()->insert($data);
+		}
+		else{
+			if($this->find($idBook)){
+				$this->getDbTable()->update($data, array('idBook = ?' => $idBook));
+			}
+			else{
+				throw new Exception("Zadané id neexistuje");
+			}
+		}
 	}
 	
 	/*****
-	 * Vrátí pole všech knih z databáze.
-	 */
-	public function fetchAll(){
-		$resultSet = $this->getDbTable()->fetchAll();
-		$entries = array();
-		foreach($resultSet as $row){
-			$entry = new Application_Model_Book();
-			$entry->setIdBook($row->idBook)
-			      ->setName($row->name)
-			      ->setAuthor($row->author)
-			      ->setDescription($row->description)
-			      ->setPrice($row->price)
-			      ->setStock($row->stock)
-				  ->setImage($row->image);
-			$entries[] = $entry;
-		}
-		return $entries;
+	 * Smaže knihu z databáze.
+	*/
+	public function delete($idBook){
+		$this->getDbTable()->delete('idBook = ' . (int) $idBook);
 	}
 
 }

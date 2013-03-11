@@ -1,4 +1,21 @@
-<br /><br />
-<div id="view-content">
-	<p>View script for controller <b>Book</b> and script/action name <b>delete</b></p>
+<?php
+$title = 'Smazat knihu';
+$this->headTitle($title);
+?>
+<h2><?php echo $this->escape($title);?></h2>
+
+<p>Opravdu chcete smazat
+	'<?php echo $this->escape($this->book->name); ?>' by
+	'<?php echo $this->escape($this->book->author); ?>'?
+</p>
+<?php
+$url = $this->url(array(
+	'idBook' => $this->escape($this->book->idBook)), 'bookDelete');
+?>
+<form action="<?php echo $url; ?>" method="post">
+<div>
+	<input type="hidden" name="id" value="<?php echo (int) $this->book->idBook; ?>" />
+	<input type="submit" name="del" value="Ano" />
+	<input type="submit" name="del" value="Ne" />
 </div>
+</form>
