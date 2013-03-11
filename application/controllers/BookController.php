@@ -38,8 +38,20 @@ class BookController extends Zend_Controller_Action
         $form = new Application_Form_Book();
         if($request->isPost()){
         	if($form->isValid($request->getPost())){
+        		//prejmenovani souboru, pokud existuje
+        		$newFileName = '';
+        		if($form->image->isUploaded()){
+        			$originalFileName = pathinfo($form->image->getFileName());
+        			$author = $form->getValue('author');
+        			$name = $form->getValue('name');
+        			$new = preg_replace('/[^a-z0-9]+/i', '-', iconv('UTF-8', 'ASCII//TRANSLIT', $author . ' ' . $name));
+        			$newFileName = $new . '.' . $originalFileName['extension'];
+        			$form->image->addFilter('Rename', $newFileName);
+        		}
         		$entry = new Application_Model_Book($form->getValues());
-        		$entry->image = $form->image->getFileName();
+        		if($form->image->isReceived()){
+        			$entry->image = $newFileName;
+        		}
         		$mapper = new Application_Model_BookMapper();
         		$mapper->save($entry);
         		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
@@ -102,6 +114,5 @@ class BookController extends Zend_Controller_Action
         }
         $this->view->book = $mapper->find($idBook, new Application_Model_Book());
     }
-
 
 }

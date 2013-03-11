@@ -66,12 +66,12 @@ class Application_Model_BookMapper
 		if(null == ($image = $book->image)){
 			unset($data['image']);
 		}
-		if(null == ($idBook = $book->idBook())){
+		if(null == ($idBook = $book->idBook)){
 			unset($data['idBook']);
 			$this->getDbTable()->insert($data);
 		}
 		else{
-			if($this->find($idBook)){
+			if($this->find($idBook, $book)){
 				$this->getDbTable()->update($data, array('idBook = ?' => $idBook));
 			}
 			else{
