@@ -39,6 +39,7 @@ class BookController extends Zend_Controller_Action
     {
         $request = $this->getRequest();
         $form = new Application_Form_Book();
+        $form->submit->setLabel('Přidat');
         if($request->isPost()){
         	if($form->isValid($request->getPost())){
         		//prejmenovani souboru, pokud existuje
@@ -68,6 +69,7 @@ class BookController extends Zend_Controller_Action
     {
     	$request = $this->getRequest();
         $form = new Application_Form_Book();
+        $form->submit->setLabel('Upravit');
         $idBook = $request->getParam('idBook', 0);
         if(!$idBook){
         	return $this->_helper->redirector()->gotoRoute(array(), 'bookNew');
