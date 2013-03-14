@@ -1,6 +1,6 @@
-<p><a href="<?php $title = 'Detail knihy';
-$this->headTitle($title);
-echo $this->url(
+<?php $title = 'Detail knihy';
+$this->headTitle($title); ?>
+<p><a href="<?php echo $this->url(
 		array(),
 		'bookIndex') ?>">Zpět na seznam knih</a></p>
 		
@@ -8,7 +8,7 @@ echo $this->url(
 <h3><?php echo $this->escape($this->entry->author)?></h3>
 <div class="box">
 	<?php if ($this->entry->image){ ?>
-		<img src="<?php echo $this->baseUrl('/images/' . $this->entry->image) ?>" class="float-left"
+		<img src="<?php echo $this->baseUrl('/images/' . $this->escape($this->entry->image)) ?>" class="float-left"
 		alt="<?php echo $this->entry->name?>"/>
 	<?php }?>
 	<?php if ($this->entry->description){?>

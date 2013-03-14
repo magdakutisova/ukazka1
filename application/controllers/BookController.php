@@ -28,6 +28,9 @@ class BookController extends Zend_Controller_Action
     public function detailAction()
     {
         $idBook = $this->getRequest()->getParam('idBook');
+    	if(!$idBook){
+        	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        }
         $book = new Application_Model_BookMapper();
         $this->view->entry = $book->find($idBook, new Application_Model_Book());
     }
