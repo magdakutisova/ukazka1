@@ -38,7 +38,7 @@ class Application_Form_Login extends Zend_Form
     			'validators' => array(
     					'EmailAddress',
     					array('validator' => 'StringLength',
-    							'options' => array(0,255))
+    							'options' => array(1,255))
     			),
     			'decorators' => $elementDecorator,
     	));
@@ -50,7 +50,7 @@ class Application_Form_Login extends Zend_Form
     			'validators' => array(
     					'Alnum',
     					array('validator' => 'StringLength',
-    							'options' => array(0,50))
+    							'options' => array(1,50))
     			),
     			'decorators' => $elementDecorator,
     	));

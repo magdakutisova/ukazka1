@@ -31,7 +31,6 @@ class UserController extends Zend_Controller_Action
         			$user->salt = $salt;
         			$user->role = 2;
         			$mapper->save($user);
-        			Zend_Debug::dump($user);
         			$this->process(array(
         					'email' => $user->email,
         					'password' => $form->getValue('password'),
