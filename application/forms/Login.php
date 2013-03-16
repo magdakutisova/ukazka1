@@ -59,6 +59,11 @@ class Application_Form_Login extends Zend_Form
     			'label' => 'Přihlásit',
     			'decorators' => $buttonDecorator,
     	));
+    	
+    	$this->addElement('hash', 'csrf', array(
+    			'ignore' => 'true',
+    			'decorators' => $hiddenDecorator,
+    	));
     }
 
 

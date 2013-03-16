@@ -30,49 +30,17 @@ class Application_Model_UserMapper
 	}
 	
 	/*****
-	 * Uloží uživatele do databáze.
-	 */
-	public function save(Application_Model_User $user){
-		$data = array(
-				'email' => $user->getEmail(),
-				'password' => $user->getPassword(),
-				'salt' => $user->getSalt(),
-				'role' => $user->getRole(),
-				'firstName' => $user->getFirstName(),
-				'surname' => $user->getSurname(),
-				'street' => $user->getStreet(),
-				'number' => $user->getNumber(),
-				'country' => $user->getCountry(),
-				);
-		if(null === ($idUser = $user->getIdUser())){
-			unset($data['idUser']);
-			$this->getDbTable()->insert($data);
-		}
-		else{
-			$this->getDbTable()->update($data, array('idUser = ?' => $idUser));
-		}
-	}
-	
-	/*****
 	 * Nalezne uživatele v databázi podle zadaného ID a vrátí příslušnou instanci třídy
 	 * Application_Model_User.
 	 */
 	public function find($idUser, Application_Model_User $user){
+		$idUser = (int) $idUser;
 		$result = $this->getDbTable()->find($idUser);
 		if(0 == count($result)){
-			return;
+			throw new Exception("Uživatel $idUser nebyl nalezen.");
 		}
 		$row = $result->current();
-		$user->setIdUser($row->idUser)
-			 ->setEmail($row->email)
-			 ->setPassword($row->password)
-			 ->setSalt($row->salt)
-			 ->setRole($row->role)
-			 ->setFirstName($row->firstName)
-			 ->setSurname($row->surname)
-			 ->setStreet($row->street)
-			 ->setNumber($row->number)
-			 ->setCountry($row->country);
+		$user->exchangeArray($row->toArray());
 		return $user;
 	}
 	
@@ -80,27 +48,36 @@ class Application_Model_UserMapper
 	 * Nalezne užvatele v databázi podle emailu a vrátí příslušnou instanci třídy
 	 * Application_Model_User.
 	 */
-	public function findByUsername($email, Application_Model_User $user){
+	public function findByEmail($email, Application_Model_User $user){
 		$select = $this->getDbTable()->select()
 			->from('user')
 			->where('email = ?', $email);
 		$result = $this->getDbTable()->fetchAll($select);
 		if(0 == count($result)){
-			return;
+			throw new Exception("Uživatel $email nebyl nalezen.");
 		}
 		$row = $result->current();
-		$user->setIdUser($row->idUser)
-		->setEmail($row->email)
-		->setPassword($row->password)
-		->setSalt($row->salt)
-		->setRole($row->role)
-		->setFirstName($row->firstName)
-		->setSurname($row->surname)
-		->setStreet($row->street)
-		->setNumber($row->number)
-		->setCountry($row->country);
+		$user->exchangeArray($row->toArray());
 		return $user;
 	}
 	
+	/*****
+	 * Uloží uživatele do databáze.
+	*/
+	public function save(Application_Model_User $user){
+		$data = $user->toArray();
+		if(null === ($idUser = $user->getIdUser())){
+			unset($data['idUser']);
+			$this->getDbTable()->insert($data);
+		}
+		else{
+			if($this->find($idUser, $user)){
+				$this->getDbTable()->update($data, array('idUser = ?' => $idUser));
+			}
+			else{
+				throw new Exception("Zadané id neexistuje.");
+			}
+		}
+	}
 }
 

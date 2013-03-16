@@ -22,7 +22,7 @@ class UserController extends Zend_Controller_Action
         	if($form->isValid($this->getRequest()->getPost())){
         		$user = new Application_Model_User($form->getValues());
         		$mapper = new Application_Model_UserMapper();
-        		$existingUser = $mapper->findByUsername($form->getValue('email'), new Application_Model_User());
+        		$existingUser = $mapper->findByEmail($form->getValue('email'), new Application_Model_User());
         		if(null === $existingUser){
         			$salt = $this->generateSalt();
         			$password = $this->encrypt($user->password, $salt);
@@ -85,7 +85,7 @@ class UserController extends Zend_Controller_Action
     
     private function process($values){
     	$mapper = new Application_Model_UserMapper();
-    	$user = $mapper->findByUsername($values['email'], new Application_Model_User());
+    	$user = $mapper->findByEmail($values['email'], new Application_Model_User());
     	if(!$user){
     		$this->_helper->FlashMessenger('Uživatel s emailem "' . $values['email'] . '" neexistuje.');
     		$this->_helper->redirector->gotoRoute(array(), 'userLogin');
