@@ -30,6 +30,10 @@ class Application_Form_Login extends Zend_Form
     			array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
     	);
     	
+    	$hiddenDecorator = array(
+    			'ViewHelper',
+    			);
+    	
     	//ELEMENTY
     	$this->addElement('text', 'email', array(
     			'label' => 'E-mail',

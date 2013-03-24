@@ -58,6 +58,7 @@ class BookController extends Zend_Controller_Action
         		}
         		$mapper = new Application_Model_BookMapper();
         		$mapper->save($entry);
+        		$this->_helper->FlashMessenger('Kniha byla přidána');
         		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         	}
         }
@@ -95,6 +96,7 @@ class BookController extends Zend_Controller_Action
         			$entry->image = $newFileName;
         		}
         		$mapper->save($entry);
+        		$this->_helper->FlashMessenger('Kniha byla upravena');
         		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         	}
         }
@@ -115,6 +117,7 @@ class BookController extends Zend_Controller_Action
         	if($del == 'Ano'){
         		$mapper->delete($idBook);
         	}
+        	$this->_helper->FlashMessenger('Kniha byla smazána');
         	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         }
         $this->view->book = $mapper->find($idBook, new Application_Model_Book());

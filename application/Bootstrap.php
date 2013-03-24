@@ -7,7 +7,11 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('view');
 		$view = $this->getResource('view');
 		$view->doctype('XHTML1_STRICT');
-		$view->setEncoding('UTF-8');
+	}
+	
+	protected function _initMeta(){
+		$this->bootstrap('view');
+		$view = $this->getResource('view');
 		$view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 	}
 	
@@ -64,7 +68,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		);
 		
 		$router->addRoute('bookDelete',
-				new Zend_Controller_Router_Route('book/delete/:idbook',
+				new Zend_Controller_Router_Route('book/delete/:idBook',
 						array('controller' => 'book',
 								'action' => 'delete'))
 		);

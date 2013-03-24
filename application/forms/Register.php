@@ -29,6 +29,10 @@ class Application_Form_Register extends Zend_Form
         		array(array('data' => 'HtmlTag'), array('tag' => 'td', 'colspan' => 2)),
         		array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
         );
+        
+        $hiddenDecorator = array(
+        		'ViewHelper',
+        );
          
         //ELEMENTY        
         $this->addElement('text', 'email', array(
