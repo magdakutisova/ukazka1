@@ -96,7 +96,7 @@ class Application_Form_Book extends Zend_Form
         						'options' => array('locale' => 'cs'))
         				,
         				array('validator' => 'GreaterThan',
-        				'options' => array('min' => -1)),
+        						'options' => array('min' => -1)),
         				),
         		'decorators' => $elementDecorator,
         ));
@@ -107,8 +107,7 @@ class Application_Form_Book extends Zend_Form
         		'validators' => array(
         				array('validator' => 'Count',
         						'options' => 1),
-        				array('validator' => 'Extension',
-        						'options' => 'jpg,png,gif'),
+        				array('validator' => 'IsImage'),
         				),
         		'decorators' => $fileDecorator,
         		));
