@@ -38,6 +38,18 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$fc->registerPlugin(new My_Plugin_Acl($acl));
 	}
 	
+	protected function _initCache(){
+		$frontend = array(
+				'lifetime' => 600,
+				'automatic_serialization' => true,
+				);
+		$backend = array(
+				'cache_dir' => '../tmp/',
+				);
+		$cache = Zend_Cache::factory('Core', 'File', $frontend, $backend);
+		Zend_Registry::set('cache', $cache);
+	}
+	
 	protected function _initRouter(array $options = array()){
 		$this->bootstrap('FrontController');
 		$frontController = $this->getResource('FrontController');

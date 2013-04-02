@@ -10,8 +10,16 @@ class BookController extends Zend_Controller_Action
 
     public function indexAction()
     {
-        $book = new Application_Model_BookMapper();
-        $this->view->entries = $book->fetchAll();
+        $cache = Zend_Registry::get('cache');
+        if(!$result = $cache->load('books')){
+        	$book = new Application_Model_BookMapper();
+        	$books = $book->fetchAll();
+        	$cache->save($books, 'books');
+        	$this->view->entries = $books;
+        }
+    	else{
+    		$this->view->entries = $result;
+    	}
         
         //ACL
         $acl = new My_Controller_Helper_Acl();
@@ -27,12 +35,21 @@ class BookController extends Zend_Controller_Action
 
     public function detailAction()
     {
-        $idBook = $this->getRequest()->getParam('idBook');
-    	if(!$idBook){
-        	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+   		$idBook = $this->getRequest()->getParam('idBook');
+   		if(!$idBook){
+   			return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+   		}
+   		
+   		$cache = Zend_Registry::get('cache');
+        if(!$result = $cache->load('book' . $idBook)){
+        	$book = new Application_Model_BookMapper();
+        	$bookResult = $book->find($idBook, new Application_Model_Book());
+        	$cache->save($bookResult, 'book' . $idBook);
+        	$this->view->entry = $bookResult;
         }
-        $book = new Application_Model_BookMapper();
-        $this->view->entry = $book->find($idBook, new Application_Model_Book());
+    	else{
+    		$this->view->entry = $result;
+    	}
     }
 
     public function newAction()
@@ -58,6 +75,10 @@ class BookController extends Zend_Controller_Action
         		}
         		$mapper = new Application_Model_BookMapper();
         		$mapper->save($entry);
+        		
+        		$cache = Zend_Registry::get('cache');
+        		$cache->remove('books');
+        		
         		$this->_helper->FlashMessenger('Kniha byla přidána');
         		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         	}
@@ -96,6 +117,11 @@ class BookController extends Zend_Controller_Action
         			$entry->image = $newFileName;
         		}
         		$mapper->save($entry);
+        		
+        		$cache = Zend_Registry::get('cache');
+        		$cache->remove('book' . $entry->idBook);
+        		$cache->remove('books');
+        		
         		$this->_helper->FlashMessenger('Kniha byla upravena');
         		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
         	}
