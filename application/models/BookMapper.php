@@ -33,14 +33,22 @@ class Application_Model_BookMapper
 	 * Vrátí pole všech knih z databáze.
 	*/
 	public function fetchAll(){
-		$resultSet = $this->getDbTable()->fetchAll();
-		$entries = array();
-		foreach($resultSet as $row){
-			$entry = new Application_Model_Book();
-			$entry->exchangeArray($row->toArray());
-			$entries[] = $entry;
+		$cache = Zend_Registry::get('cache');
+		if(!$result = $cache->load('books')){
+			$resultSet = $this->getDbTable()->fetchAll();
+			$entries = array();
+			foreach($resultSet as $row){
+				$entry = new Application_Model_Book();
+				$entry->exchangeArray($row->toArray());
+				$entries[] = $entry;
+			}
+			$cache->save($entries, 'books');
+			return $entries;
 		}
-		return $entries;
+		else{
+			return $result;
+		}
+		
 	}
 	
 	/******
@@ -48,14 +56,22 @@ class Application_Model_BookMapper
 	 * Application_Model_Book.
 	 */
 	public function find($idBook, Application_Model_Book $book){
-		$idBook = (int) $idBook;
-		$result = $this->getDbTable()->find($idBook);
-		if(0 == count($result)){
-			throw new Exception("Kniha $idBook nebyla nalezena");
+		$cache = Zend_Registry::get('cache');
+		if(!$result = $cache->load('book' . $idBook)){
+			$idBook = (int) $idBook;
+			$result = $this->getDbTable()->find($idBook);
+			if(0 == count($result)){
+				throw new Exception("Kniha $idBook nebyla nalezena");
+			}
+			$row = $result->current();
+			$book->exchangeArray($row->toArray());
+			$cache->save($book, 'book' . $idBook);
+			return $book;
 		}
-		$row = $result->current();
-		$book->exchangeArray($row->toArray());
-		return $book;
+		else{
+			return $result;
+		}
+		
 	}
 	
 	/*****
@@ -69,10 +85,15 @@ class Application_Model_BookMapper
 		if(null == ($idBook = $book->idBook)){
 			unset($data['idBook']);
 			$this->getDbTable()->insert($data);
+			$cache = Zend_Registry::get('cache');
+			$cache->remove('books');
 		}
 		else{
 			if($this->find($idBook, $book)){
 				$this->getDbTable()->update($data, array('idBook = ?' => $idBook));
+				$cache = Zend_Registry::get('cache');
+				$cache->remove('books');
+				$cache->remove('book' . $idBook);
 			}
 			else{
 				throw new Exception("Zadané id neexistuje");
