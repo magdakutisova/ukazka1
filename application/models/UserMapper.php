@@ -54,7 +54,7 @@ class Application_Model_UserMapper
 			->where('email = ?', $email);
 		$result = $this->getDbTable()->fetchAll($select);
 		if(0 == count($result)){
-			throw new Exception("Uživatel $email nebyl nalezen.");
+			return null;
 		}
 		$row = $result->current();
 		$user->exchangeArray($row->toArray());

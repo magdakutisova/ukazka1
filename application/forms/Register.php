@@ -22,6 +22,13 @@ class Application_Form_Register extends Zend_Form
         		array('Label', array('tag' => 'td')),
         		array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
         );
+        
+        $captchaDecorator = array(
+        		array('Errors'),
+        		array(array('data' => 'HtmlTag'), array('tag' => 'td')),
+        		array('Label', array('tag' => 'td')),
+        		array(array('row' => 'HtmlTag'), array('tag' => 'tr')),
+        );
          
         $buttonDecorator = array(
         		'ViewHelper',
@@ -68,6 +75,16 @@ class Application_Form_Register extends Zend_Form
         						'options' => array('token' => 'password'))
         				),
         		'decorators' => $elementDecorator,
+        		));
+        
+        $this->addElement('captcha', 'captcha', array(
+        		'label' => 'Prosím, opište text',
+        		'captcha' => array(
+        				'captcha' => 'Figlet',
+        				'wordLen' => 6,
+        				'timeout' => 300,
+        				),
+        		'decorators' => $captchaDecorator,
         		));
         
         $this->addElement('submit', 'create', array(
