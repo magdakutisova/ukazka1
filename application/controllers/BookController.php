@@ -29,7 +29,7 @@ class BookController extends Zend_Controller_Action
     {
    		$idBook = $this->getRequest()->getParam('idBook');
    		if(!$idBook){
-   			return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+   			return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
    		}
    		
    		$book = new Application_Model_BookMapper();
@@ -41,7 +41,7 @@ class BookController extends Zend_Controller_Action
         $request = $this->getRequest();
         $form = new Application_Form_Book();
         $form->submit->setLabel('Přidat');
-        if($request->isPost()){
+        if($request->isPost()){       	
         	if($form->isValid($request->getPost())){
         		//prejmenovani souboru, pokud existuje
         		$newFileName = '';
@@ -53,7 +53,8 @@ class BookController extends Zend_Controller_Action
         			$newFileName = $new . '.' . $originalFileName['extension'];
         			$form->image->addFilter('Rename', $newFileName);
         		}
-        		$entry = new Application_Model_Book($form->getValues());
+        		$form->getValues();
+        		$entry = new Application_Model_Book($request->getPost());
         		if($form->image->isReceived()){
         			$entry->image = $newFileName;
         		}
@@ -61,7 +62,7 @@ class BookController extends Zend_Controller_Action
         		$mapper->save($entry);
         		
         		$this->_helper->FlashMessenger('Kniha byla přidána');
-        		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        		return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
         	}
         }
         
@@ -100,7 +101,7 @@ class BookController extends Zend_Controller_Action
         		$mapper->save($entry);
         		
         		$this->_helper->FlashMessenger('Kniha byla upravena');
-        		return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        		return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
         	}
         }
         
@@ -113,7 +114,7 @@ class BookController extends Zend_Controller_Action
         $idBook = $request->getParam('idBook', 0);
         $mapper = new Application_Model_BookMapper();
         if(!$idBook){
-        	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        	return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
         }
         if($request->isPost()){
         	$del = $request->getParam('del', 'Ne');
@@ -121,7 +122,7 @@ class BookController extends Zend_Controller_Action
         		$mapper->delete($idBook);
         	}
         	$this->_helper->FlashMessenger('Kniha byla smazána');
-        	return $this->_helper->redirector()->gotoRoute(array(), 'bookIndex');
+        	return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
         }
         $this->view->book = $mapper->find($idBook, new Application_Model_Book());
     }

@@ -7,6 +7,7 @@ class Application_Form_Book extends Zend_Form
     {
         $this->setMethod('post');
         $this->setAttrib('enctype', 'multipart/form-data');
+        $this->setName('book');
         
         //DEKORÁTORY
         $this->setDecorators(array(
@@ -104,6 +105,7 @@ class Application_Form_Book extends Zend_Form
         $this->addElement('file', 'image', array(
         		'label' => 'Obálka knihy:',
         		'destination' => PUBLIC_PATH . '/images',
+        		'required' => false,
         		'validators' => array(
         				array('validator' => 'Count',
         						'options' => 1),

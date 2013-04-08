@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<dataset>
+	<book idBook="1" name="Sněhulák" author="Jo Nesbo" 
+		price="327" stock="46" />
+	<book idBook="2" name="Žítkovské bohyně" author="Kateřina Tučková"
+		price="273" stock="69" />
+</dataset>

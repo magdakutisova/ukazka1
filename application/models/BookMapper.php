@@ -106,6 +106,8 @@ class Application_Model_BookMapper
 	*/
 	public function delete($idBook){
 		$this->getDbTable()->delete('idBook = ' . (int) $idBook);
+		$cache = Zend_Registry::get('cache');
+		$cache->remove('books');
 	}
 
 }
