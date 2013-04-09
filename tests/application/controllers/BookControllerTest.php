@@ -28,8 +28,10 @@ class BookControllerTest extends Zend_Test_PHPUnit_ControllerTestCase{
 	
 	public function testRunIndexAction(){
 		$this->dispatch('/book');
+		$this->assertResponseCode(200);
 		$this->assertController('book');
 		$this->assertAction('index');
+		$this->assertRoute('bookIndex');
 	}
 	
 	public function testNewActionContainsForm(){
