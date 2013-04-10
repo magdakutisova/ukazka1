@@ -3,7 +3,7 @@ class BookMapperTest extends Zend_Test_PHPUnit_DatabaseTestCase{
 	
 	private $_connectionMock;
 	
-	//NEFUNKČNÍ NA PHPUNIT 3.6, NUTNO POUŽÍT NIŽŠÍ VERZE
+	//NEFUNKČNÍ NA PHPUNIT 3.7, NUTNO POUŽÍT NIŽŠÍ VERZE (3.4 nebo 3.5)
 	//http://framework.zend.com/issues/browse/ZF-11781
 	
 	public function setUp(){

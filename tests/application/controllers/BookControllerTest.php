@@ -6,6 +6,10 @@ class BookControllerTest extends Zend_Test_PHPUnit_ControllerTestCase{
         parent::setUp();
 	}
 	
+	/**
+	 * Získá hodnotu elementu csrf z načteného formuláře.
+	 * @return string csrf
+	 */
 	public function getCsrfToken(){
 		$html = $this->getResponse()->getBody();
 		$dom = new Zend_Dom_Query($html);
@@ -13,6 +17,9 @@ class BookControllerTest extends Zend_Test_PHPUnit_ControllerTestCase{
 		return $csrf;
 	}
 	
+	/**
+	 * Přihlásí uživatele.
+	 */
 	public function userLogin(){
 		$this->dispatch('/user/login');
 		$this->request->setMethod('POST')
@@ -59,9 +66,8 @@ class BookControllerTest extends Zend_Test_PHPUnit_ControllerTestCase{
 					));
 		$this->dispatch('/book/new');
 		//zde test selhává protože nelze simulovat vkládání souboru a formulář neprojde validací
-		//po odmazání řádku if($form->isValid($request->getPost())){ z newAction() v BookControlleru
+		//po zakomentování řádku if($form->isValid($request->getPost())){ z newAction() v BookControlleru
 		//test funguje. Chyba Zendu: http://framework.zend.com/issues/browse/ZF-3791
-		//po zrušení validace je test funkční
 		$this->assertResponseCode(302);
 		$this->assertRedirectTo('/book');
 	}

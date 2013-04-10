@@ -6,7 +6,7 @@ class BookTest extends PHPUnit_Framework_Testcase{
 		parent::setUp();
 	}
 	
-	public function testBookInitiaState(){
+	public function testBookInitialState(){
 		$book = new Application_Model_Book();
 		
 		$this->assertNull($book->idBook, 'proměnná "idBook" musí být zpočátku prázdná');
@@ -63,7 +63,7 @@ class BookTest extends PHPUnit_Framework_Testcase{
 		$this->assertNull($book->image, 'proměnná "image" má být null');
 	}
 	
-	public function testGetArrayCopyReturnsAnArrayWithPropertyValues(){
+	public function testToArrayReturnsAnArrayWithPropertyValues(){
 		$book = new Application_Model_Book();
 		$data = array(
 				'idBook' => 1,
