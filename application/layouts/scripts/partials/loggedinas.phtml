@@ -2,9 +2,8 @@
 $auth = Zend_Auth::getInstance();
 if($auth->hasIdentity()){
 	$username = $auth->getIdentity()->email;
-	$idUser = $auth->getIdentity()->idUser;
 	$logoutUrl = $this->url(array(), 'userLogout');
-	$profileUrl = $this->url(array('idUser' => $idUser), 'userProfile');  ?>
+	$profileUrl = $this->url(array(), 'userProfile');  ?>
 	<p class="no-margin">
 		<span class="bold">Přihlášen: </span> <?php echo $this->escape($username); ?>
 	</p>
