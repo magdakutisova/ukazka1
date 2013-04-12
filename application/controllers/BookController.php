@@ -3,11 +3,6 @@
 class BookController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
     public function indexAction()
     {
         $book = new Application_Model_BookMapper();
@@ -23,6 +18,7 @@ class BookController extends Zend_Controller_Action
         $this->view->canAddBooks = $acl->isAllowed($role, 'book', 'new');
         $this->view->canEditBooks = $acl->isAllowed($role, 'book', 'edit');
         $this->view->canDeleteBooks = $acl->isAllowed($role, 'book', 'delete');
+        $this->view->canFavoriteBooks = $acl->isAllowed($role, 'book', 'favorite');
     }
 
     public function detailAction()
@@ -127,4 +123,28 @@ class BookController extends Zend_Controller_Action
         $this->view->book = $mapper->find($idBook, new Application_Model_Book());
     }
 
+    public function favoriteAction()
+    {
+        $request = $this->getRequest();
+    	$idBook = $this->getParam('idBook', 0);
+    	$mapper = new Application_Model_FavoriteMapper();
+    	if(!$idBook){
+    		return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
+    	}
+    	if(!Zend_Auth::getInstance()->hasIdentity()){
+    		return $this->_helper->redirector->gotoSimple('denied', 'error');
+    	}
+    	$idUser = Zend_Auth::getInstance()->getIdentity()->idUser;
+    	$result = $mapper->favorite($idBook, $idUser);
+    	if($result){
+    		$this->_helper->FlashMessenger('Kniha byla přidána do seznamu oblíbených');
+    	}
+    	else{
+    		$this->_helper->FlashMessenger('Tuto knihu již máte v seznamu oblíbených');
+    	}
+    	return $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
+    }
+
+
 }
+

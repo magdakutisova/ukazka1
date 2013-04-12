@@ -47,8 +47,26 @@ class Application_Model_BookMapper
 		}
 		else{
 			return $result;
+		}		
+	}
+	
+	/****
+	 * Vrátí pole oblíbených knih uživatele.
+	 */
+	public function fetchFavorites($idUser){
+		$select = $this->getDbTable()->select()
+			->from('book')
+			->join('favorite', 'book.idBook = favorite.idBook')
+			->where('idUser = ?', $idUser);
+		$select->setIntegrityCheck(false);
+		$resultSet = $this->getDbTable()->fetchAll($select);
+		$entries = array();
+		foreach($resultSet as $row){
+			$entry = new Application_Model_Book();
+			$entry->exchangeArray($row->toArray());
+			$entries[] = $entry;
 		}
-		
+		return $entries;
 	}
 	
 	/******
@@ -105,7 +123,7 @@ class Application_Model_BookMapper
 	 * Smaže knihu z databáze.
 	*/
 	public function delete($idBook){
-		$this->getDbTable()->delete('idBook = ' . (int) $idBook);
+		$this->getDbTable()->delete(array('idBook = ?' => $idBook));
 		$cache = Zend_Registry::get('cache');
 		$cache->remove('books');
 	}

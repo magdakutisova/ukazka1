@@ -3,16 +3,6 @@
 class UserController extends Zend_Controller_Action
 {
 
-    public function init()
-    {
-        /* Initialize action controller here */
-    }
-
-    public function indexAction()
-    {
-        // action body
-    }
-
     public function registerAction()
     {
         $form = new Application_Form_Register();
@@ -70,19 +60,30 @@ class UserController extends Zend_Controller_Action
         $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
     }
     
+    public function profileAction()
+    {
+    	if(!Zend_Auth::getInstance()->hasIdentity()){
+    		$this->_helper->redirector->gotoSimple('denied', 'error');
+    	}
+    	$this->view->email = Zend_Auth::getInstance()->getIdentity()->email;
+    	$mapper = new Application_Model_BookMapper();
+    	$this->view->favorites = $mapper->fetchFavorites(Zend_Auth::getInstance()->getIdentity()->idUser);
+    }
+
     private function generateSalt()
     {
     	$salt = mcrypt_create_iv ( 64 );
     	return $salt;
     }
-    
+
     private function encrypt($password, $salt)
     {
     	$password = hash ( 'sha256', $salt . $password );
     	return $password;
     }
-    
-    private function process($values){
+
+    private function process($values)
+    {
     	$mapper = new Application_Model_UserMapper();
     	$user = $mapper->findByEmail($values['email'], new Application_Model_User());
     	if(!$user){
@@ -109,8 +110,9 @@ class UserController extends Zend_Controller_Action
     		return false;
     	}
     }
-    
-	private function getAuthAdapter(){
+
+    private function getAuthAdapter()
+    {
 		$dbAdapter = Zend_Db_Table::getDefaultAdapter();
 		$authAdapter = new Zend_Auth_Adapter_DbTable($dbAdapter);
 		
@@ -119,9 +121,11 @@ class UserController extends Zend_Controller_Action
 			->setCredentialColumn('password');
 		
 		return $authAdapter;
-	}
+    }
 
 }
+
+
 
 
 

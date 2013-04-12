@@ -18,8 +18,9 @@ class My_Controller_Helper_Acl extends Zend_Acl{
 		$this->allow($guest, 'book', array('index', 'detail'));
 		$this->allow($guest, 'error');
 		
-		$this->allow($user, 'user', 'logout');
+		$this->allow($user, 'user', array('logout', 'profile'));
 		$this->deny($user, 'user', array('login', 'register'));
+		$this->allow($user, 'book', 'favorite');
 		
 		$this->allow($admin, 'book', array('new', 'edit', 'delete'));
 	}

@@ -59,19 +59,19 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				new Zend_Controller_Router_Route('book',
 						array('controller' => 'book',
 								'action' => 'index'))
-				);
+		);
 		
 		$router->addRoute('bookDetail',
 				new Zend_Controller_Router_Route('book/detail/:idBook',
 						array('controller' => 'book',
 								'action' => 'detail'))
-				);
+		);
 		
 		$router->addRoute('bookNew',
 				new Zend_Controller_Router_Route('book/new',
 						array('controller' => 'book',
 								'action' => 'new'))
-				);
+		);
 		
 		$router->addRoute('bookEdit',
 				new Zend_Controller_Router_Route('book/edit/:idBook',
@@ -85,6 +85,12 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 								'action' => 'delete'))
 		);
 		
+		$router->addRoute('bookFavorite',
+				new Zend_Controller_Router_Route('book/favorite/:idBook',
+						array('controller' => 'book',
+								'action' => 'favorite'))
+		);
+		
 		$router->addRoute('userRegister',
 				new Zend_Controller_Router_Route('user/register',
 						array('controller' => 'user',
@@ -94,12 +100,20 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$router->addRoute('userLogin',
 				new Zend_Controller_Router_Route('user/login',
 						array('controller' => 'user',
-								'action' => 'login')));
+								'action' => 'login'))
+		);
 		
 		$router->addRoute('userLogout',
 				new Zend_Controller_Router_Route('user/logout',
 						array('controller' => 'user',
-								'action' => 'logout')));
+								'action' => 'logout'))
+		);
+		
+		$router->addRoute('userProfile',
+				new Zend_Controller_Router_Route('user/profile',
+						array('controller' => 'user',
+								'action' => 'profile'))
+		);
 	}
 	
 }

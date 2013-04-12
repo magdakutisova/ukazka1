@@ -1,0 +1,22 @@
+<?php $title = 'Profil uživatele';
+$this->headTitle($title); ?>
+
+<p><a href="<?php echo $this->url(
+		array(),
+		'bookIndex') ?>">Zpět na seznam knih</a></p>
+
+<h2>Profil uživatele <?php echo $this->email; ?></h2>
+<h3>Oblíbené knihy</h3>
+<?php if($this->favorites){ ?>
+<table>
+<?php foreach ($this->favorites as $entry):?>
+<tr>
+	<td><?php echo $this->escape($entry->name)?></td>
+	<td><?php echo $this->escape($entry->author)?></td>
+</tr>
+<?php endforeach; ?>
+</table>
+<?php }
+else{?>
+	<p>Nemáte žádné oblíbené knihy.</p>
+<?php }?>

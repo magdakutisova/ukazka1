@@ -19,12 +19,16 @@
           <actionMethod actionName="new"/>
           <actionMethod actionName="edit"/>
           <actionMethod actionName="delete"/>
+          <actionMethod actionName="favorite"/>
         </controllerFile>
         <controllerFile controllerName="User">
           <actionMethod actionName="index"/>
           <actionMethod actionName="register"/>
           <actionMethod actionName="login"/>
           <actionMethod actionName="logout"/>
+        </controllerFile>
+        <controllerFile controllerName="Blah">
+          <actionMethod actionName="index"/>
         </controllerFile>
       </controllersDirectory>
       <formsDirectory>
@@ -46,6 +50,7 @@
         <modelFile modelName="Book"/>
         <modelFile modelName="UserMapper"/>
         <modelFile modelName="User"/>
+        <modelFile modelName="Blah"/>
       </modelsDirectory>
       <modulesDirectory enabled="false"/>
       <servicesDirectory enabled="false"/>
@@ -87,6 +92,12 @@
           <viewControllerScriptsDirectory forControllerName="Error">
             <viewScriptFile forActionName="denied"/>
           </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Book">
+            <viewScriptFile forActionName="favorite"/>
+          </viewControllerScriptsDirectory>
+          <viewControllerScriptsDirectory forControllerName="Blah">
+            <viewScriptFile forActionName="index"/>
+          </viewControllerScriptsDirectory>
         </viewScriptsDirectory>
         <viewHelpersDirectory/>
         <viewFiltersDirectory enabled="false"/>
@@ -122,6 +133,12 @@
       <testApplicationDirectory>
         <testApplicationControllerDirectory>
           <testApplicationControllerFile forControllerName="Index"/>
+          <testApplicationControllerFile forControllerName="Book">
+            <testApplicationActionMethod forActionName="favorite"/>
+          </testApplicationControllerFile>
+          <testApplicationControllerFile forControllerName="Blah">
+            <testApplicationActionMethod forActionName="index"/>
+          </testApplicationControllerFile>
         </testApplicationControllerDirectory>
       </testApplicationDirectory>
       <testLibraryDirectory/>

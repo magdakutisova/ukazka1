@@ -2,9 +2,14 @@
 $auth = Zend_Auth::getInstance();
 if($auth->hasIdentity()){
 	$username = $auth->getIdentity()->email;
-	$logoutUrl = $this->url(array(), 'userLogout');  ?>
+	$idUser = $auth->getIdentity()->idUser;
+	$logoutUrl = $this->url(array(), 'userLogout');
+	$profileUrl = $this->url(array('idUser' => $idUser), 'userProfile');  ?>
 	<p class="no-margin">
 		<span class="bold">Přihlášen: </span> <?php echo $this->escape($username); ?>
+	</p>
+	<p class="no-margin">
+		<a href="<?php echo $profileUrl;?>">Profil uživatele</a>
 	</p>
 	<p class="no-margin">
 		<a href="<?php echo $logoutUrl;?>">Odhlásit se</a>
