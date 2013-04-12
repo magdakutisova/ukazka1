@@ -44,7 +44,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 				'automatic_serialization' => true,
 				);
 		$backend = array(
-				'cache_dir' => '../tmp/',
+				'cache_dir' => '../data/cache/',
 				);
 		$cache = Zend_Cache::factory('Core', 'File', $frontend, $backend);
 		Zend_Registry::set('cache', $cache);
