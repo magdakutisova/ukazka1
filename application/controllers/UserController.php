@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Controller pro manipulaci s uživateli.
+ * 
+ * @author Magda
+ *
+ */
 class UserController extends Zend_Controller_Action
 {
 
+	/**
+	 * Akce pro registraci nových uživatelů.
+	 */
     public function registerAction()
     {
         $form = new Application_Form_Register();
@@ -35,6 +44,9 @@ class UserController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Akce pro přihlášení uživatele.
+     */
     public function loginAction()
     {
         $form = new Application_Form_Login();
@@ -54,12 +66,18 @@ class UserController extends Zend_Controller_Action
         }
     }
 
+    /**
+     * Akce pro odhlášení uživatele.
+     */
     public function logoutAction()
     {
         Zend_Auth::getInstance()->clearIdentity();
         $this->_helper->redirector->gotoRoute(array(), 'bookIndex');
     }
     
+    /**
+     * Akce pro zobrazení profilu uživatele.
+     */
     public function profileAction()
     {
     	if(!Zend_Auth::getInstance()->hasIdentity()){
@@ -70,18 +88,36 @@ class UserController extends Zend_Controller_Action
     	$this->view->favorites = $mapper->fetchFavorites(Zend_Auth::getInstance()->getIdentity()->idUser);
     }
 
+    /**
+     * Funkce generující sůl pro zašifrování hesla.
+     * 
+     * @return string sůl
+     */
     private function generateSalt()
     {
     	$salt = mcrypt_create_iv ( 64 );
     	return $salt;
     }
 
+    /**
+     * Funkce, která zašifruje heslo pomocí soli
+     * 
+     * @param unknown $password heslo k zašifrování
+     * @param unknown $salt sůl pro zašifrování
+     * @return string zašifrované heslo
+     */
     private function encrypt($password, $salt)
     {
     	$password = hash ( 'sha256', $salt . $password );
     	return $password;
     }
 
+    /**
+     * Funkce, která zpracuje hodnoty zadané uživatelem a pokud je to možné, uživatele přihlásí.
+     * 
+     * @param unknown $values uživatelské jméno a heslo
+     * @return boolean true, pokud byl uživatel přihlášen, false, pokud nastala chyba
+     */
     private function process($values)
     {
     	$mapper = new Application_Model_UserMapper();
@@ -111,6 +147,11 @@ class UserController extends Zend_Controller_Action
     	}
     }
 
+    /**
+     * Vrátí nakonfigurovaný adaptér k tabulce User určený k přihlašování. 
+     * 
+     * @return Zend_Auth_Adapter_DbTable adaptér
+     */
     private function getAuthAdapter()
     {
 		$dbAdapter = Zend_Db_Table::getDefaultAdapter();
@@ -124,12 +165,3 @@ class UserController extends Zend_Controller_Action
     }
 
 }
-
-
-
-
-
-
-
-
-

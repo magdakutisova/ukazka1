@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Controller pro práci s chybami.
+ * 
+ * @author Zend Tool
+ *
+ */
 class ErrorController extends Zend_Controller_Action
 {
 
+	/**
+	 * Vygenerovaná akce pro práci s chybami.
+	 */
     public function errorAction()
     {
         $errors = $this->_getParam('error_handler');
@@ -43,6 +52,11 @@ class ErrorController extends Zend_Controller_Action
         $this->view->request   = $errors->request;
     }
 
+    /**
+     * Vygenerovaná funkce pro práci s logem
+     * 
+     * @return boolean|unknown instance logu
+     */
     public function getLog()
     {
         $bootstrap = $this->getInvokeArg('bootstrap');
@@ -53,6 +67,11 @@ class ErrorController extends Zend_Controller_Action
         return $log;
     }
 
+    /**
+     * Akce pro odepření přístupu na stránku.
+     * 
+     * @author Magda Kutišová
+     */
 	public function deniedAction()
     {
         $this->view->message = 'Nemáte právo přistupovat na tuto stránku.';

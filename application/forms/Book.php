@@ -1,8 +1,18 @@
 <?php
 
+/**
+ * Třída obsahující nastavení formuláře pro zadávání údajů o knihách.
+ * 
+ * @author Magda Kutišová
+ * 
+ */
 class Application_Form_Book extends Zend_Form
 {
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Zend_Form::init()
+	 */
     public function init()
     {
         $this->setMethod('post');
@@ -10,12 +20,14 @@ class Application_Form_Book extends Zend_Form
         $this->setName('book');
         
         //DEKORÁTORY
+        //dekorátor pro celý formulář
         $this->setDecorators(array(
         		'FormElements',
         		array('HtmlTag', array('tag' => 'table')),
         		'Form',
         		));
         
+        //dekorátory jednotlivých elementů
         $elementDecorator = array(
         		'ViewHelper',
         		array('Errors'),

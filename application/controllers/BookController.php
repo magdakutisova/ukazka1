@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Controller pro manipulaci s knihami.
+ * 
+ * @author Magda Kutišová
+ *
+ */
 class BookController extends Zend_Controller_Action
 {
 
+	/**
+	 * Akce pro zobrazení seznamu všech knih.
+	 */
     public function indexAction()
     {
         $book = new Application_Model_BookMapper();
@@ -21,6 +30,9 @@ class BookController extends Zend_Controller_Action
         $this->view->canFavoriteBooks = $acl->isAllowed($role, 'book', 'favorite');
     }
 
+    /**
+     * Akce pro zobrazení detailu knihy.
+     */
     public function detailAction()
     {
    		$idBook = $this->getRequest()->getParam('idBook');
@@ -32,6 +44,9 @@ class BookController extends Zend_Controller_Action
    		$this->view->entry = $book->find($idBook, new Application_Model_Book());
     }
 
+    /**
+     * Akce pro přidání nové knihy do databáze.
+     */
     public function newAction()
     {
         $request = $this->getRequest();
@@ -65,6 +80,9 @@ class BookController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    /**
+     * Akce pro editaci knihy.
+     */
     public function editAction()
     {
     	$request = $this->getRequest();
@@ -104,6 +122,9 @@ class BookController extends Zend_Controller_Action
         $this->view->form = $form;
     }
 
+    /**
+     * Akce pro smazání knihy.
+     */
     public function deleteAction()
     {
     	$request = $this->getRequest();
@@ -123,6 +144,9 @@ class BookController extends Zend_Controller_Action
         $this->view->book = $mapper->find($idBook, new Application_Model_Book());
     }
 
+    /**
+     * Akce pro přidání knihy do seznamu oblíbených.
+     */
     public function favoriteAction()
     {
         $request = $this->getRequest();

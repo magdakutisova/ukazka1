@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Třída mapující záznam tabulky book na objekt Book.
+ * @author Magda Kutišová
+ *
+ */
 class Application_Model_Book
 {
 
@@ -11,8 +16,9 @@ class Application_Model_Book
 	protected $stock;
 	protected $image;
 	
-	/*******************
+	/**
 	 * Vytvoří instanci a nastaví atributy.
+	 * @param array $options atributy k nastavení
 	 */
 	public function __construct(array $options = null){
 		if(is_array($options)){
@@ -20,8 +26,11 @@ class Application_Model_Book
 		}
 	}
 	
-	/*************
+	/**
 	 * Implementace magic metody __set.
+	 * @param unknown $name jméno atributu k nastavení
+	 * @param unknown $value hodnota atributu k nastavení
+	 * @throws Exception pokud je atribut neplatný
 	 */
 	public function __set($name, $value){
 		$method = 'set' . $name;
@@ -31,8 +40,10 @@ class Application_Model_Book
 		$this->$method($value);
 	}
 	
-	/*********************
+	/**
 	 * Implementace magic metody __get.
+	 * @param unknown $name jméno požadovaného atributu
+	 * @throws Exception pokud je atribut neplatný
 	 */
 	public function __get($name){
 		$method = 'get' . $name;
@@ -42,8 +53,10 @@ class Application_Model_Book
 		return $this->$method();
 	}
 	
-	/**********
-	 * Nastavení atributů třídy.
+	/**
+	 * Nastavení atributů třídy
+	 * @param array $options atributy třídy
+	 * @return Application_Model_Book instance třídy s nastavenými atributy
 	 */
 	public function setOptions(array $options){
 		$methods = get_class_methods($this);
@@ -119,16 +132,18 @@ class Application_Model_Book
 		return $this->image;
 	}
 	
-	/***********************
-	 * Vrátí pole proměnných třídy.
+	/**
+	 * Vrátí pole parametrů třídy.
+	 * @return multitype: pole parametrů třídy
 	 */
 	public function toArray(){
 		return get_object_vars($this);
 	}
 	
-	/*****
-	 * Načte proměnné třídy z pole.
-	*/
+	/**
+	 * Načte proměnné z pole do třídy.
+	 * @param unknown $data pole proměnných k nastavení třídě
+	 */
 	public function exchangeArray($data){
 		$this->idBook = (isset($data['idBook'])) ? $data['idBook'] : null;
 		$this->name = (isset($data['name'])) ? $data['name'] : null;

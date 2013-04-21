@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Třída obsahující nastavení formuláře pro přihlášení.
+ * @author Magda Kutišová
+ *
+ */
 class Application_Form_Login extends Zend_Form
 {
-
+	
+	/**
+	 * (non-PHPdoc)
+	 * @see Zend_Form::init()
+	 */
     public function init()
     { 	
     	$this->setName('login');

@@ -1,12 +1,21 @@
 <?php
 
+/**
+ * Třída pro práci s databázovou tabulkou book.
+ * @author Magda Kutišová
+ *
+ */
 class Application_Model_BookMapper
 {
 	
 	protected $dbTable;
 	
-	/***************************************************************
+	/**
 	 * Nastaví do proměnné $dbTable instanci brány k databázové tabulce.
+	 * 
+	 * @param unknown $dbTable instance brány k databázi
+	 * @throws Exception pokud je poskytnutá brána neplatná
+	 * @return Application_Model_BookMapper instance třídy pro práci s databází s nastavenou bránou k databázi
 	 */
 	public function setDbTable($dbTable){
 		if(is_string($dbTable)){
@@ -19,8 +28,9 @@ class Application_Model_BookMapper
 		return $this;
 	}
 	
-	/****************************************************************
+	/**
 	 * Vrátí odkaz na instanci brány k databázové tabulce.
+	 * @return Ambigous <unknown, Zend_Db_Table_Abstract, unknown> instance brány k databázové tabulce
 	 */
 	public function getDbTable(){
 		if(null === $this->dbTable){
@@ -29,9 +39,10 @@ class Application_Model_BookMapper
 		return $this->dbTable;
 	}
 	
-	/*****
+	/**
 	 * Vrátí pole všech knih z databáze.
-	*/
+	 * @return multitype:Application_Model_Book |unknown pole knih nebo data z cache
+	 */
 	public function fetchAll(){
 		$cache = Zend_Registry::get('cache');
 		if(!$result = $cache->load('books')){
@@ -50,8 +61,11 @@ class Application_Model_BookMapper
 		}		
 	}
 	
-	/****
-	 * Vrátí pole oblíbených knih uživatele.
+	/**
+	 * Vrátí oblíbené knihy uživatele.
+	 * 
+	 * @param unknown $idUser ID uživatele
+	 * @return multitype:Application_Model_Book pole oblíbených knih
 	 */
 	public function fetchFavorites($idUser){
 		$select = $this->getDbTable()->select()
@@ -69,9 +83,13 @@ class Application_Model_BookMapper
 		return $entries;
 	}
 	
-	/******
+	/**
 	 * Nalezne knihu v databázi podle zadaného ID a vrátí příslušnou instanci třídy
 	 * Application_Model_Book.
+	 * @param unknown $idBook ID knihy k nalezení
+	 * @param Application_Model_Book $book instance modelové třídy book pro naplnění daty z DB
+	 * @throws Exception pokud kniha není nalezena
+	 * @return Application_Model_Book|Ambigous <Zend_Db_Table_Rowset_Abstract, unknown> instance modelové třídy Book nebo data z cache
 	 */
 	public function find($idBook, Application_Model_Book $book){
 		$cache = Zend_Registry::get('cache');
@@ -92,9 +110,11 @@ class Application_Model_BookMapper
 		
 	}
 	
-	/*****
+	/**
 	 * Uloží knihu do databáze.
-	*/
+	 * @param Application_Model_Book $book kniha k uložení
+	 * @throws Exception pokud v DB neexistuje ID nastavené u knihy
+	 */
 	public function save(Application_Model_Book $book){
 		$data = $book->toArray();
 		if(null == ($image = $book->image)){
@@ -119,9 +139,10 @@ class Application_Model_BookMapper
 		}
 	}
 	
-	/*****
+	/**
 	 * Smaže knihu z databáze.
-	*/
+	 * @param unknown $idBook ID knihy ke smazání
+	 */
 	public function delete($idBook){
 		$this->getDbTable()->delete(array('idBook = ?' => $idBook));
 		$cache = Zend_Registry::get('cache');

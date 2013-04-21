@@ -1,8 +1,17 @@
 <?php
 
+/**
+ * Třída obsahující nastavení formuláře pro registraci nového uživatele.
+ * @author Magda Kutišová
+ *
+ */
 class Application_Form_Register extends Zend_Form
 {
 
+	/**
+	 * (non-PHPdoc)
+	 * @see Zend_Form::init()
+	 */
     public function init()
     {
         $this->setName('register');
