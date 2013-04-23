@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * Helper pro zobrazení zpráv z FlashMessengeru.
+ * @author Magda Kutišová
+ *
+ */
 class Zend_View_Helper_Messages extends Zend_View_Helper_Abstract {
     public function messages() {
 

@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * Třída mapující záznam tabulky user na objekt User.
+ * @author Magda Kutišová
+ *
+ */
 class Application_Model_User
 {
 
@@ -8,24 +13,23 @@ class Application_Model_User
 	protected $password;
 	protected $salt;
 	protected $role;
-	protected $firstName;
-	protected $surname;
-	protected $street;
-	protected $number;
-	protected $country;
 	
-	/*******************
+	/**
 	 * Vytvoří instanci a nastaví atributy.
-	*/
+	 * @param array $options atributy k nastavení
+	 */
 	public function __construct(array $options = null){
 		if(is_array($options)){
 			$this->setOptions($options);
 		}
 	}
 	
-	/*************
+	/**
 	 * Implementace magic metody __set.
-	*/
+	 * @param unknown $name jméno atributu k nastavení
+	 * @param unknown $value hodnota atributu k nastavení
+	 * @throws Exception pokud je atribut neplatný
+	 */
 	public function __set($name, $value){
 		$method = 'set' . $name;
 		if(('mapper' == $name) || !method_exists($this, $method)){
@@ -34,9 +38,11 @@ class Application_Model_User
 		$this->$method($value);
 	}
 	
-	/*********************
+	/**
 	 * Implementace magic metody __get.
-	*/
+	 * @param unknown $name jméno požadovaného atributu
+	 * @throws Exception pokud je atribut neplatný
+	 */
 	public function __get($name){
 		$method = 'get' . $name;
 		if(('mapper' == $name) || !method_exists($this, $method)){
@@ -45,9 +51,11 @@ class Application_Model_User
 		return $this->$method();
 	}
 	
-	/**********
-	 * Nastavení atributů třídy.
-	*/
+	/**
+	 * Nastavení atributů instance.
+	 * @param array $options atributy instance
+	 * @return Application_Model_User instance s nastavenými atributy
+	 */
 	public function setOptions(array $options){
 		$methods = get_class_methods($this);
 		foreach ($options as $key => $value){
@@ -104,72 +112,24 @@ class Application_Model_User
 		return $this->role;
 	}
 	
-	public function setFirstName($firstName){
-		$this->firstName = $firstName;
-		return $this;
-	}
-	
-	public function getFirstName(){
-		return $this->firstName;
-	}
-	
-	public function setSurname($surname){
-		$this->surname = $surname;
-		return $this;
-	}
-	
-	public function getSurname(){
-		return $this->surname;
-	}
-	
-	public function setStreet($street){
-		$this->street = $street;
-		return $this;
-	}
-	
-	public function getStreet(){
-		return $this->street;
-	}
-	
-	public function setNumber($number){
-		$this->number = $number;
-		return $this;
-	}
-	
-	public function getNumber(){
-		return $this->number;
-	}
-	
-	public function setCountry($country){
-		$this->country = $country;
-		return $this;
-	}
-	
-	public function getCountry(){
-		return $this->country;
-	}
-	
-	/***********************
-	 * Vrátí pole proměnných třídy.
-	*/
+	/**
+	 * Vrátí pole parametrů třídy.
+	 * @return multitype: pole parametrů třídy
+	 */
 	public function toArray(){
 		return get_object_vars($this);
 	}	
 	
-	/*****
-	 * Načte proměnné třídy z pole.
-	*/
+	/**
+	 * Načte proměnné z pole do třídy.
+	 * @param unknown $data pole proměnných k nastavení třídě
+	 */
 	public function exchangeArray($data){
 		$this->idUser = (isset($data['idUser'])) ? $data['idUser'] : null;
 		$this->email = (isset($data['email'])) ? $data['email'] : null;
 		$this->password = (isset($data['password'])) ? $data['password'] : null;
 		$this->salt = (isset($data['salt'])) ? $data['salt'] : null;
 		$this->role = (isset($data['role'])) ? $data['role'] : null;
-		$this->firstName = (isset($data['firstName'])) ? $data['firstName'] : null;
-		$this->surname = (isset($data['surname'])) ? $data['surname'] : null;
-		$this->street = (isset($data['street'])) ? $data['street'] : null;
-		$this->number = (isset($data['number'])) ? $data['number'] : null;
-		$this->country = (isset($data['country'])) ? $data['country'] : null;
 	}
 	
 }

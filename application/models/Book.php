@@ -54,9 +54,9 @@ class Application_Model_Book
 	}
 	
 	/**
-	 * Nastavení atributů třídy
-	 * @param array $options atributy třídy
-	 * @return Application_Model_Book instance třídy s nastavenými atributy
+	 * Nastavení atributů instance
+	 * @param array $options atributy instance
+	 * @return Application_Model_Book instance s nastavenými atributy
 	 */
 	public function setOptions(array $options){
 		$methods = get_class_methods($this);

@@ -1,6 +1,14 @@
 <?php
+/**
+ * Třída obsahující definici zdrojů a rolí pro přístupová práva.
+ * @author Magda Kutišová
+ *
+ */
 class My_Controller_Helper_Acl extends Zend_Acl{
 	
+	/**
+	 * Nastavení zdrojů, rolí a přístupových práv.
+	 */
 	public function __construct(){
 		$this->add(new Zend_Acl_Resource('book'));
 		$this->add(new Zend_Acl_Resource('user'));

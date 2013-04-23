@@ -1,20 +1,34 @@
 <?php
 
+/**
+ * Zaváděcí soubor aplikace.
+ * @author Magda Kutišová
+ *
+ */
 class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 {
 
+	/**
+	 * Nastavení doctype.
+	 */
 	protected function _initDoctype(){
 		$this->bootstrap('view');
 		$view = $this->getResource('view');
 		$view->doctype('XHTML1_STRICT');
 	}
 	
+	/**
+	 * Nastavení meta tagů.
+	 */
 	protected function _initMeta(){
 		$this->bootstrap('view');
 		$view = $this->getResource('view');
 		$view->headMeta()->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8');
 	}
 	
+	/**
+	 * Nastavení překladače.
+	 */
 	protected function _initTranslator(){
 		$translator = new Zend_Translate(
 				array(
@@ -26,18 +40,27 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Validate_Abstract::setDefaultTranslator($translator);
 	}
 	
+	/**
+	 * Nastavení automatického načítání souborů.
+	 */
 	protected function _initAutoload() {
 		$loader = Zend_Loader_Autoloader::getInstance();
 		$loader->registerNamespace('My_');
 		Zend_Controller_Action_HelperBroker::addPrefix('My_Controller_Helper');
 	}
 	
+	/**
+	 * Nastavení ACL.
+	 */
 	protected function _initAcl(){
 		$acl = new My_Controller_Helper_Acl();
 		$fc = Zend_Controller_Front::getInstance();
 		$fc->registerPlugin(new My_Plugin_Acl($acl));
 	}
 	
+	/**
+	 * Nastavení cache.
+	 */
 	protected function _initCache(){
 		$frontend = array(
 				'lifetime' => 600,
@@ -50,6 +73,10 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		Zend_Registry::set('cache', $cache);
 	}
 	
+	/**
+	 * Nastavení routování
+	 * @param array $options možnosti
+	 */
 	protected function _initRouter(array $options = array()){
 		$this->bootstrap('FrontController');
 		$frontController = $this->getResource('FrontController');
