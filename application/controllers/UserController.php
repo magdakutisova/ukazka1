@@ -3,7 +3,7 @@
 /**
  * Controller pro manipulaci s uživateli.
  * 
- * @author Magda
+ * @author Magda Kutišová
  *
  */
 class UserController extends Zend_Controller_Action
@@ -148,7 +148,7 @@ class UserController extends Zend_Controller_Action
     }
 
     /**
-     * Vrátí nakonfigurovaný adaptér k tabulce User určený k přihlašování. 
+     * Vrátí nakonfigurovaný adaptér k tabulce user určený k přihlašování. 
      * 
      * @return Zend_Auth_Adapter_DbTable adaptér
      */
